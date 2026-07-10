@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Portfolio interactif de Yannick Yanat — « Le Circuit », plongée dans un monde-circuit",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
