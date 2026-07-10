@@ -33,7 +33,7 @@ function NodeSection({ node, hot }: { node: ExperienceNode; hot?: boolean }) {
 /** Mode datasheet : tout le contenu en lecture directe, sans la plongée. */
 export default function Datasheet({ t }: DatasheetProps) {
   return (
-    <main className="datasheet" data-screen-label="Datasheet — lecture directe">
+    <main className="datasheet selectable" data-screen-label="Datasheet — lecture directe">
       <header className="datasheet__header">
         <div className="tag">{t.ui.readTag}</div>
         <h1 className="datasheet__name">{t.id.name}</h1>

@@ -23,6 +23,8 @@ html {
 
 body {
   margin: 0;
+  -webkit-user-select: none;
+  user-select: none;
   background:
     radial-gradient(ellipse 130% 80% at 20% 0%, #16110a 0%, rgba(22, 17, 10, 0) 55%),
     radial-gradient(ellipse 110% 70% at 85% 100%, #130f09 0%, rgba(19, 15, 9, 0) 60%),
@@ -61,6 +63,36 @@ body[data-nocursor] button {
   cursor: none;
 }
 
+/* zones de contenu lisible : la sélection de texte y reste possible */
+.selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ============ scrollbar — cuivre sur substrat ============ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c48042 #12100b;
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #12100b;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8a5a2e 0%, #c48042 50%, #8a5a2e 100%);
+  border: 3px solid #12100b;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e8a25c;
+}
+::-webkit-scrollbar-corner {
+  background: #12100b;
+}
+
 /* ============ keyframes ============ */
 @keyframes lcScroll {
   0% { transform: scaleY(0); transform-origin: top; }
@@ -84,6 +116,12 @@ body[data-nocursor] button {
 @keyframes lcFadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lcPulse {
+  0% { box-shadow: 0 0 0 0 rgba(232, 162, 92, 0.5); }
+  70% { box-shadow: 0 0 0 14px rgba(232, 162, 92, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(232, 162, 92, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

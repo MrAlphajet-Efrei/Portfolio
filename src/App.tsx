@@ -5,6 +5,7 @@ import BootScreen from './components/BootScreen';
 import TopBar from './components/TopBar';
 import Hud from './components/Hud';
 import StoryBeats from './components/StoryBeats';
+import CoreScreen from './components/CoreScreen';
 import CoreSection from './components/CoreSection';
 import Datasheet from './components/Datasheet';
 import MenuOverlay from './components/MenuOverlay';
@@ -13,23 +14,24 @@ import CustomCursor from './components/CustomCursor';
 
 const DENSITY = 1;
 
-/** Fenêtres de profondeur [entrée, sortie] des quatre story beats. */
+/** Fenêtres de profondeur [entrée, sortie] des cinq story beats. */
 const BEATS = [
   { a: -0.3, b: 0.55 },
   { a: 0.8, b: 1.52 },
   { a: 1.72, b: 2.42 },
   { a: 2.62, b: 3.34 },
+  { a: 3.36, b: 3.52 },
 ];
 
 /** Profondeurs de caméra des couches, pour le saut depuis le menu. */
 const LAYER_DEPTHS = [0, 1.15, 2.05, 2.95];
 
 function layerName(d: number): string {
-  if (d < 0.7) return 'surface';
-  if (d < 1.6) return 'layer 01 — periphery';
-  if (d < 2.5) return 'layer 02 — main bus';
-  if (d < 3.42) return 'layer 03 — power zone';
-  return 'core';
+  if (d < 0.7) return 'surface · 00/04';
+  if (d < 1.6) return 'layer 01/04 — periphery';
+  if (d < 2.5) return 'layer 02/04 — main bus';
+  if (d < 3.42) return 'layer 03/04 — power zone';
+  return 'core · 04/04';
 }
 
 function detectLang(): Lang {
@@ -48,8 +50,8 @@ export default function App() {
   const finePointer = useMemo(() => window.matchMedia('(pointer: fine)').matches, []);
 
   // Miroir de l'état pour les callbacks impératifs (moteur, clavier, boucle rAF).
-  const stateRef = useRef({ lang, read, menuOpen, openNode });
-  stateRef.current = { lang, read, menuOpen, openNode };
+  const stateRef = useRef({ lang, read, menuOpen, openNode, loading });
+  stateRef.current = { lang, read, menuOpen, openNode, loading };
 
   const engineRef = useRef<CircuitEngine | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,13 +69,18 @@ export default function App() {
   const b1Ref = useRef<HTMLDivElement>(null);
   const b2Ref = useRef<HTMLDivElement>(null);
   const b3Ref = useRef<HTMLDivElement>(null);
-  const beatRefs = useMemo(() => [b0Ref, b1Ref, b2Ref, b3Ref], []);
+  const b4Ref = useRef<HTMLDivElement>(null);
+  const coreScreenRef = useRef<HTMLDivElement>(null);
+  const beatRefs = useMemo(() => [b0Ref, b1Ref, b2Ref, b3Ref, b4Ref], []);
 
   const lastPct = useRef(-1);
   const lastCharge = useRef(-1);
   const lastLayer = useRef('');
+  const coreT0 = useRef(0);
+  const autoFired = useRef(false);
+  const preTimer = useRef(0);
 
-  /** HUD + story beats pilotés hors React : appelé à chaque frame par le moteur. */
+  /** HUD + story beats + écran core pilotés hors React : appelé à chaque frame par le moteur. */
   const handleDepth = useCallback(
     (d: number, isOnline: boolean) => {
       if (stateRef.current.read) return;
@@ -87,6 +94,22 @@ export default function App() {
       if (ln !== lastLayer.current) {
         lastLayer.current = ln;
         if (layerRef.current) layerRef.current.textContent = ln;
+      }
+      // auto-power : un visiteur qui patiente au cœur est aidé automatiquement
+      if (!isOnline && d > 3.45) {
+        if (!coreT0.current) {
+          coreT0.current = Date.now();
+        } else if (
+          !autoFired.current &&
+          Date.now() - coreT0.current > 2200 &&
+          engineRef.current &&
+          engineRef.current.charge < 0.03
+        ) {
+          autoFired.current = true;
+          engineRef.current.powerCoreAnim();
+        }
+      } else if (!isOnline) {
+        coreT0.current = 0;
       }
       for (let i = 0; i < BEATS.length; i++) {
         const el = beatRefs[i].current;
@@ -104,6 +127,23 @@ export default function App() {
           inner.style.transform = `translateY(${((1 - vin) * 28 - vout * 28).toFixed(1)}px)`;
           inner.style.pointerEvents = op > 0.5 ? 'auto' : 'none';
         }
+      }
+      // écran core (fixe) — apparaît à la profondeur max, s'efface à l'overscroll vers la datasheet
+      const coreScreen = coreScreenRef.current;
+      if (coreScreen) {
+        let vin = Math.min(1, Math.max(0, (d - 3.56) / 0.14));
+        vin = vin * vin * (3 - 2 * vin);
+        const spacer = document.getElementById('lc-spacer');
+        let over = 0;
+        if (spacer) {
+          over = Math.min(
+            1,
+            Math.max(0, ((window.scrollY || 0) - (spacer.offsetHeight - window.innerHeight)) / (window.innerHeight * 0.55)),
+          );
+        }
+        const op = vin * (1 - over * over * (3 - 2 * over));
+        coreScreen.style.opacity = op.toFixed(3);
+        coreScreen.style.visibility = op > 0.03 ? 'visible' : 'hidden';
       }
     },
     [beatRefs],
@@ -144,7 +184,7 @@ export default function App() {
     document.documentElement.style.overflow = 'hidden';
     let pct = 0;
     let doneTimer = 0;
-    const timer = window.setInterval(() => {
+    preTimer.current = window.setInterval(() => {
       pct = Math.min(100, pct + (reduced ? 34 : 3 + Math.random() * 7));
       if (pctRef.current) pctRef.current.textContent = Math.floor(pct) + '%';
       if (preBarRef.current) preBarRef.current.style.width = pct + '%';
@@ -153,7 +193,7 @@ export default function App() {
         stepRef.current.textContent = steps[Math.min(steps.length - 1, Math.floor(pct / (100 / steps.length)))];
       }
       if (pct >= 100) {
-        window.clearInterval(timer);
+        window.clearInterval(preTimer.current);
         if (preRef.current) preRef.current.style.opacity = '0';
         doneTimer = window.setTimeout(() => {
           document.documentElement.style.overflow = '';
@@ -162,11 +202,22 @@ export default function App() {
       }
     }, 50);
     return () => {
-      window.clearInterval(timer);
+      window.clearInterval(preTimer.current);
       window.clearTimeout(doneTimer);
       document.documentElement.style.overflow = '';
     };
   }, [reduced]);
+
+  /** Passe la séquence de boot d'un clic. */
+  const skipBoot = useCallback(() => {
+    if (!stateRef.current.loading) return;
+    window.clearInterval(preTimer.current);
+    if (preRef.current) preRef.current.style.opacity = '0';
+    window.setTimeout(() => {
+      document.documentElement.style.overflow = '';
+      setLoading(false);
+    }, 220);
+  }, []);
 
   // --- clavier ---
   useEffect(() => {
@@ -264,36 +315,74 @@ export default function App() {
     [doJump],
   );
 
+  /** Depuis l'écran core online : descendre à la fiche technique. */
+  const goSheet = useCallback(() => {
+    const core = document.getElementById('lc-core');
+    window.scrollTo({
+      top: core ? core.offsetTop : window.scrollY + window.innerHeight,
+      behavior: reduced ? 'auto' : 'smooth',
+    });
+  }, [reduced]);
+
+  /** Bouton contact du topbar : rejoindre la section contact quel que soit le mode. */
+  const goContact = useCallback(() => {
+    setMenuOpen(false);
+    if (stateRef.current.read) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: reduced ? 'auto' : 'smooth' });
+      return;
+    }
+    engineRef.current?.powerCoreAnim();
+    doJump(4);
+  }, [reduced, doJump]);
+
   const t = STRINGS[lang];
   const hints = finePointer ? t.ui.hintsFine : t.ui.hintsTouch;
+  const coreInstruction = finePointer ? t.core.instruction : t.core.instructionTouch;
 
   return (
     <div className="app">
-      <canvas ref={canvasRef} className="circuit-canvas" />
+      <canvas ref={canvasRef} className="circuit-canvas" aria-hidden="true" />
 
       {!read && (
         <>
           <div className="dive">
             <div id="lc-spacer" />
-            <CoreSection
+            <CoreScreen
+              screenRef={coreScreenRef}
               t={t}
               online={online}
+              coreInstruction={coreInstruction}
               chargeRef={chargeRef}
               onPowerCore={() => engineRef.current?.powerCoreAnim()}
+              onGoSheet={goSheet}
             />
+            <CoreSection t={t} online={online} />
           </div>
           <StoryBeats
             t={t}
             beatRefs={beatRefs}
+            coreInstruction={coreInstruction}
             onOpenEu={() => setOpenNode('eu')}
             onOpenLlm={() => setOpenNode('llm')}
+            onJumpTo={doJump}
           />
         </>
       )}
 
       {read && <Datasheet t={t} />}
 
-      <TopBar t={t} lang={lang} onSetLang={setLang} onToggleMenu={() => setMenuOpen((open) => !open)} />
+      <TopBar
+        t={t}
+        lang={lang}
+        readMode={read}
+        onSetLang={setLang}
+        onToggleRead={() => {
+          setRead((r) => !r);
+          setMenuOpen(false);
+        }}
+        onGoContact={goContact}
+        onToggleMenu={() => setMenuOpen((open) => !open)}
+      />
 
       {!read && <Hud powerRef={powerRef} layerRef={layerRef} barRef={barRef} hints={hints} />}
 
@@ -313,7 +402,15 @@ export default function App() {
       {openNode && <InspectModal t={t} node={openNode} onClose={() => setOpenNode(null)} />}
 
       {loading && (
-        <BootScreen preRef={preRef} pctRef={pctRef} preBarRef={preBarRef} stepRef={stepRef} firstStep={t.pre.steps[0]} />
+        <BootScreen
+          preRef={preRef}
+          pctRef={pctRef}
+          preBarRef={preBarRef}
+          stepRef={stepRef}
+          firstStep={t.pre.steps[0]}
+          skipHint={t.pre.skip}
+          onSkip={skipBoot}
+        />
       )}
 
       <CustomCursor ringRef={ringRef} cursorRef={cursorRef} />

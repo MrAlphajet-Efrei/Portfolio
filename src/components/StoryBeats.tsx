@@ -4,16 +4,18 @@ import type { Strings } from '../i18n/strings';
 interface StoryBeatsProps {
   t: Strings;
   beatRefs: RefObject<HTMLDivElement | null>[];
+  coreInstruction: string;
   onOpenEu: () => void;
   onOpenLlm: () => void;
+  onJumpTo: (index: number) => void;
 }
 
 /**
- * Les quatre « story beats » fixes, synchronisés à la profondeur de plongée.
+ * Les cinq « story beats » fixes, synchronisés à la profondeur de plongée.
  * L'opacité et la translation du premier enfant sont pilotées en impératif
  * par le callback onDepth du moteur (voir App).
  */
-export default function StoryBeats({ t, beatRefs, onOpenEu, onOpenLlm }: StoryBeatsProps) {
+export default function StoryBeats({ t, beatRefs, coreInstruction, onOpenEu, onOpenLlm, onJumpTo }: StoryBeatsProps) {
   return (
     <>
       <div ref={beatRefs[0]} className="beat beat--center" data-screen-label="Surface — ouverture">
@@ -21,9 +23,19 @@ export default function StoryBeats({ t, beatRefs, onOpenEu, onOpenLlm }: StoryBe
           <div className="tag">{t.b0.tag}</div>
           <h1 className="beat__hero-title">{t.b0.title}</h1>
           <p className="beat__hero-body">{t.b0.body}</p>
+          <div className="beat__ident">
+            <span className="beat__ident-line" />
+            <span>
+              {t.id.name} · {t.id.title}
+            </span>
+            <span className="beat__ident-line" />
+          </div>
         </div>
         <div className="beat__scrollcue">
-          <div className="beat__scrollcue-label">{t.b0.scroll}</div>
+          <button className="btn-dive" onClick={() => onJumpTo(1)}>
+            <span className="blink">▼</span>
+            <span>{t.b0.scroll}</span>
+          </button>
           <div className="scroll-line" />
         </div>
       </div>
@@ -46,6 +58,10 @@ export default function StoryBeats({ t, beatRefs, onOpenEu, onOpenLlm }: StoryBe
               </div>
             ))}
           </div>
+          <button className="btn-next btn-next--spaced" onClick={() => onJumpTo(2)}>
+            <span className="blink">▼</span>
+            <span>{t.b1.next}</span>
+          </button>
         </div>
       </div>
 
@@ -65,6 +81,10 @@ export default function StoryBeats({ t, beatRefs, onOpenEu, onOpenLlm }: StoryBe
           <button className="btn-cta" onClick={onOpenEu}>
             {t.b2.cta} →
           </button>
+          <button className="btn-next" onClick={() => onJumpTo(3)}>
+            <span className="blink">▼</span>
+            <span>{t.b2.next}</span>
+          </button>
         </div>
       </div>
 
@@ -80,6 +100,24 @@ export default function StoryBeats({ t, beatRefs, onOpenEu, onOpenLlm }: StoryBe
           <button className="btn-cta btn-cta--hot" onClick={onOpenLlm}>
             {t.b3.cta} →
           </button>
+          <button className="btn-next" onClick={() => onJumpTo(4)}>
+            <span className="blink">▼</span>
+            <span>{t.b3.next}</span>
+          </button>
+        </div>
+      </div>
+
+      <div ref={beatRefs[4]} className="beat beat--center" data-screen-label="Core approach — annonce">
+        <div className="beat__announce">
+          <div className="beat__announce-tag">
+            <span className="led led--beacon" />
+            <span>{t.core.detected}</span>
+          </div>
+          <div className="beat__announce-instruction">{coreInstruction}</div>
+          <div className="dive-chip">
+            <span className="blink">▼</span>
+            <span>{t.core.approach}</span>
+          </div>
         </div>
       </div>
     </>

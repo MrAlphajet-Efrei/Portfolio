@@ -6,12 +6,14 @@ interface BootScreenProps {
   preBarRef: RefObject<HTMLDivElement | null>;
   stepRef: RefObject<HTMLDivElement | null>;
   firstStep: string;
+  skipHint: string;
+  onSkip: () => void;
 }
 
-/** Écran de boot : la progression est pilotée en impératif (refs) par App pour éviter un re-render par tick. */
-export default function BootScreen({ preRef, pctRef, preBarRef, stepRef, firstStep }: BootScreenProps) {
+/** Écran de boot : la progression est pilotée en impératif (refs) par App ; un clic passe la séquence. */
+export default function BootScreen({ preRef, pctRef, preBarRef, stepRef, firstStep, skipHint, onSkip }: BootScreenProps) {
   return (
-    <div ref={preRef} className="boot" data-screen-label="Boot sequence">
+    <div ref={preRef} className="boot" data-screen-label="Boot sequence" onClick={onSkip}>
       <div className="boot__panel">
         <div className="boot__tag">
           <span className="boot__led" />
@@ -27,6 +29,7 @@ export default function BootScreen({ preRef, pctRef, preBarRef, stepRef, firstSt
           {firstStep}
         </div>
       </div>
+      <div className="boot__skip">{skipHint}</div>
     </div>
   );
 }

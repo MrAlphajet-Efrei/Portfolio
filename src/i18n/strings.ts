@@ -38,22 +38,28 @@ export interface Strings {
     read: string;
     readOff: string;
     readTag: string;
+    contact: string;
+    navRead: string;
+    navDive: string;
     hintsFine: [string, string];
     hintsTouch: [string, string];
     inspect: string;
   };
-  pre: { steps: string[] };
+  pre: { steps: string[]; skip: string };
   b0: { tag: string; title: string; body: string; scroll: string };
-  b1: { tag: string; title: string; body: string };
-  b2: { tag: string; title: string; body: string; cta: string };
-  b3: { tag: string; title: string; body: string; status: string; cta: string };
+  b1: { tag: string; title: string; body: string; next: string };
+  b2: { tag: string; title: string; body: string; cta: string; next: string };
+  b3: { tag: string; title: string; body: string; status: string; cta: string; next: string };
   core: {
     detected: string;
     insufficient: string;
     instruction: string;
+    instructionTouch: string;
     button: string;
+    auto: string;
     online: string;
     scrollHint: string;
+    approach: string;
   };
   id: {
     tag: string;
@@ -96,29 +102,35 @@ export const STRINGS: Record<Lang, Strings> = {
       read: 'Datasheet — lecture directe',
       readOff: 'Reprendre la plongée',
       readTag: 'datasheet mode — lecture directe',
+      contact: 'contact',
+      navRead: 'datasheet',
+      navDive: 'circuit',
       hintsFine: ['tirer — dévier les pistes', 'maintenir — surge'],
       hintsTouch: ['toucher — impulsion', 'maintenir — surge'],
       inspect: '[ inspecter ]',
     },
     pre: {
       steps: ['POST — power-on self test…', 'routing power grid…', 'calibrating clocks…', 'system map ready.'],
+      skip: 'cliquer pour passer',
     },
     b0: {
       tag: 'system map — powered down',
       title: "Un système s'éveille",
       body: 'Vous survolez un monde-circuit : chaque strate est une époque, chaque composant une expérience. Au cœur, le processeur.',
-      scroll: 'scroll to dive',
+      scroll: 'scrollez pour plonger',
     },
     b1: {
       tag: 'layer 01 — periphery · early training',
       title: 'Les premiers composants',
       body: 'Zones peu alimentées, signaux rares. La formation grave les fondations, les stages posent les premiers composants.',
+      next: 'layer 02 — bus principal',
     },
     b2: {
       tag: 'layer 02 — main bus · intensive training',
       title: 'Le courant se stabilise',
       body: "Deux ans de V.I.E à Bruxelles, dans une institution européenne. Back Java/Python, front, CI/CD : refonte d'une application critique déployée dans toute l'Union.",
       cta: 'ouvrir EU-CORE',
+      next: 'layer 03 — zone de puissance',
     },
     b3: {
       tag: 'layer 03 — power zone · deploy',
@@ -126,14 +138,18 @@ export const STRINGS: Record<Lang, Strings> = {
       body: "Amaris Consulting, 2026. Owner de A à Z d'une application d'analyse augmentée par LLM, en production dans le transport maritime.",
       status: 'status : production',
       cta: 'ouvrir LLM-ENGINE',
+      next: 'descendre au core',
     },
     core: {
       detected: 'core detected',
       insufficient: 'puissance insuffisante',
-      instruction: "Maintenez n'importe où pour alimenter le cœur",
+      instruction: "Maintenez le clic n'importe où pour alimenter le cœur",
+      instructionTouch: "Maintenez le doigt appuyé n'importe où pour alimenter le cœur",
       button: 'auto-power',
+      auto: "sans action de votre part, l'alimentation démarre toute seule",
       online: 'system online — core 100%',
       scrollHint: 'scroll — fiche technique',
+      approach: "scrollez jusqu'au cœur",
     },
     id: {
       tag: 'core identity',
@@ -225,12 +241,16 @@ export const STRINGS: Record<Lang, Strings> = {
       read: 'Datasheet — direct reading',
       readOff: 'Resume the dive',
       readTag: 'datasheet mode — direct reading',
+      contact: 'contact',
+      navRead: 'datasheet',
+      navDive: 'circuit',
       hintsFine: ['drag — bend the traces', 'hold — surge'],
       hintsTouch: ['tap — pulse', 'hold — surge'],
       inspect: '[ inspect ]',
     },
     pre: {
       steps: ['POST — power-on self test…', 'routing power grid…', 'calibrating clocks…', 'system map ready.'],
+      skip: 'click to skip',
     },
     b0: {
       tag: 'system map — powered down',
@@ -242,12 +262,14 @@ export const STRINGS: Record<Lang, Strings> = {
       tag: 'layer 01 — periphery · early training',
       title: 'The first components',
       body: 'Barely-powered zones, scarce signals. Education etches the foundations; the internships place the first components.',
+      next: 'layer 02 — main bus',
     },
     b2: {
       tag: 'layer 02 — main bus · intensive training',
       title: 'The current stabilizes',
       body: 'Two years on a V.I.E assignment in Brussels, inside a European institution. Java/Python back end, front end, CI/CD: rebuilding a critical application deployed across the whole Union.',
       cta: 'open EU-CORE',
+      next: 'layer 03 — power zone',
     },
     b3: {
       tag: 'layer 03 — power zone · deploy',
@@ -255,14 +277,18 @@ export const STRINGS: Record<Lang, Strings> = {
       body: 'Amaris Consulting, 2026. End-to-end owner of an LLM-augmented analysis application, in production in maritime transport.',
       status: 'status: production',
       cta: 'open LLM-ENGINE',
+      next: 'descend to the core',
     },
     core: {
       detected: 'core detected',
       insufficient: 'insufficient power',
-      instruction: 'Hold anywhere to power the core',
+      instruction: 'Click and hold anywhere to power the core',
+      instructionTouch: 'Press and hold anywhere to power the core',
       button: 'auto-power',
+      auto: 'no action needed — power starts on its own',
       online: 'system online — core 100%',
       scrollHint: 'scroll — datasheet',
+      approach: 'scroll down to the core',
     },
     id: {
       tag: 'core identity',

@@ -21,6 +21,8 @@ export default class CircuitEngine {
   hoverMajor: string | null;
   online: boolean;
   depth: number;
+  /** Core charge progress, 0..1 */
+  charge: number;
   setLabels(labels: Record<string, string>): void;
   setInspect(caption: string): void;
   setDensity(density: number): void;

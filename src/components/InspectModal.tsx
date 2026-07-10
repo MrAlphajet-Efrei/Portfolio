@@ -12,7 +12,7 @@ export default function InspectModal({ t, node, onClose }: InspectModalProps) {
   const data = t.nodes[node];
   return (
     <div className="modal-backdrop" data-screen-label="Composant ouvert" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal selectable" onClick={(e) => e.stopPropagation()}>
         <button className="modal__close" onClick={onClose}>
           {t.ui.close} · esc
         </button>

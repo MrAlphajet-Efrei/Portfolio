@@ -680,6 +680,15 @@ CircuitEngine.prototype._render = function (red) {
       ctx.strokeStyle = rgba(isMajor ? C_HOT : C_TRACE, 1);
       ctx.lineWidth = isMajor ? 1.4 : 1;
       ctx.strokeRect(comp.x - comp.w / 2, comp.y - comp.h / 2, comp.w, comp.h);
+      // pulsing beacon ring on interactive majors — signals "clickable"
+      if (isMajor && !red && s > 0.55) {
+        var bp = (this.t * 0.55) % 1;
+        var bw2 = comp.w * (0.58 + bp * 0.45), bh2 = comp.h * (0.58 + bp * 0.45);
+        ctx.globalAlpha = (1 - bp) * (1 - bp) * 0.55 * la * dim;
+        ctx.strokeStyle = rgba(C_HOT, 1);
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(comp.x - bw2, comp.y - bh2, bw2 * 2, bh2 * 2);
+      }
       // inner die
       if (isMajor || comp.named) {
         ctx.globalAlpha = (0.12 + 0.4 * cbr) * la * dim;

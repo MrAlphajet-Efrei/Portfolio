@@ -4,11 +4,14 @@ import type { Lang, Strings } from '../i18n/strings';
 interface TopBarProps {
   t: Strings;
   lang: Lang;
+  readMode: boolean;
   onSetLang: (lang: Lang) => void;
+  onToggleRead: () => void;
+  onGoContact: () => void;
   onToggleMenu: () => void;
 }
 
-export default function TopBar({ t, lang, onSetLang, onToggleMenu }: TopBarProps) {
+export default function TopBar({ t, lang, readMode, onSetLang, onToggleRead, onGoContact, onToggleMenu }: TopBarProps) {
   return (
     <div className="topbar">
       <div className="topbar__brand">
@@ -31,6 +34,12 @@ export default function TopBar({ t, lang, onSetLang, onToggleMenu }: TopBarProps
             EN
           </button>
         </div>
+        <button className="topbar__nav-btn" onClick={onToggleRead}>
+          {readMode ? t.ui.navDive : t.ui.navRead}
+        </button>
+        <button className="topbar__nav-btn topbar__nav-btn--light" onClick={onGoContact}>
+          {t.ui.contact}
+        </button>
         <button className="topbar__menu-btn" onClick={onToggleMenu}>
           {t.ui.menu}
         </button>

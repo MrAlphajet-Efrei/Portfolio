@@ -102,3 +102,30 @@ fichiers, un changement moteur peut arriver sans changement HTML) :
 - La gravure du chipset remplace le texte « Y.YANAT » (coreName) par le
   monogramme ; le sous-titre AI-CORE descend à ch.side * 0.235
 - Resynchronisé verbatim, vérifié dans Chrome au niveau du core
+
+## Resync du 2026-07-10 (5e import) — guidage & accessibilité
+
+Grosse évolution du design (+10 Ko HTML, 253 lignes de diff) axée guidage
+du visiteur :
+
+- **Plongée raccourcie** : spacer 800vh → 320vh
+- **Navigation guidée** : boutons « ▼ » encadrés (hero → layer 01, core →
+  fiche technique) et liens « layer suivant » dans chaque carte (b1→b2→b3→core)
+- **Nouveau beat b4** « core approach » (annonce à d 3.36–3.52)
+- **Écran core = overlay fixe** (b5) : fondu piloté par la profondeur
+  (entrée d>3.56, sortie sur overscroll vers la datasheet) ; la section
+  #lc-core en flux ne contient plus que les fiches identité/specs/contact
+- **Auto-power sur inactivité** : 2,2 s immobile au cœur (charge <3 %)
+  → powerCoreAnim automatique
+- **Boot cliquable** (skip) + hint « cliquer pour passer »
+- **Topbar** : boutons datasheet/circuit (toggle read) et contact
+  (powerCore + jump core, ou bas de page en mode lecture)
+- **user-select none** global, réactivé sur datasheet/fiches/modales
+  (.selectable) ; scrollbar cuivre ; instruction fine/touch ; compteurs
+  « 0X/04 » dans le HUD ; hero signé « — Nom · Titre — »
+- **Moteur** : anneau-balise pulsant autour des composants majeurs
+  (signale le cliquable) — seul hunk moteur
+
+Vérifié dans Chrome : skip boot au clic, hero + bouton plonger, liens next
+dans les cartes, beacon sur EU-CORE, écran core en fondu, **auto-power déclenché
+sans action → SYSTEM ONLINE**, bouton fiche technique. Build strict + lint OK.

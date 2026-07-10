@@ -147,7 +147,71 @@
 }
 
 #lc-spacer {
-  height: 800vh;
+  height: 320vh;
+}
+
+/* bouton de navigation « ▼ » encadré (plonger / fiche technique) */
+.btn-dive {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  border: 1px solid rgba(232, 162, 92, 0.4);
+  border-radius: 2px;
+  background: rgba(13, 11, 8, 0.65);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--copper-link);
+}
+.btn-dive:hover {
+  background: rgba(232, 162, 92, 0.12);
+  border-color: rgba(232, 162, 92, 0.8);
+  color: var(--copper-bright);
+}
+
+/* même habillage mais non interactif (annonce d'approche du core) */
+.dive-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 20px;
+  border: 1px solid rgba(232, 162, 92, 0.4);
+  border-radius: 2px;
+  background: rgba(13, 11, 8, 0.65);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--copper-link);
+}
+
+/* lien discret « layer suivant » dans les cartes */
+.btn-next {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.btn-next:hover {
+  color: var(--copper-link);
+}
+.btn-next--spaced {
+  margin-top: 6px;
+}
+
+.blink {
+  animation: lcBlink 1.4s ease-in-out infinite;
 }
 
 /* ============ story beats (fixes, synchronisés à la profondeur) ============ */
@@ -210,14 +274,60 @@
   align-items: center;
   gap: 10px;
 }
-.beat__scrollcue-label {
+.beat__scrollcue .scroll-line { height: 44px; }
+
+/* signature sous le hero : — Nom · Titre — */
+.beat__ident {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #efc189;
+}
+.beat__ident-line {
+  display: inline-block;
+  width: 26px;
+  height: 1px;
+  background: rgba(232, 162, 92, 0.5);
+}
+
+/* annonce d'approche du core (beat 04) */
+.beat__announce {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  max-width: 680px;
+}
+.beat__announce-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--copper);
 }
-.beat__scrollcue .scroll-line { height: 44px; }
+.led--beacon {
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 12px rgba(232, 162, 92, 1);
+  animation: lcBlink 1s ease-in-out infinite;
+}
+.beat__announce-instruction {
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--ink-bright);
+  text-wrap: balance;
+  text-shadow: 0 0 40px rgba(11, 10, 8, 0.9);
+}
 
 .beat__card {
   width: min(460px, 90vw);
@@ -306,21 +416,31 @@
   color: var(--ink-dim);
 }
 
-/* ============ section core (en flux, après la plongée) ============ */
+/* ============ écran core (overlay fixe, fondu piloté par la profondeur) ============ */
 
-#lc-core {
-  position: relative;
+.core-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
-.core__stage {
-  min-height: 100vh;
+.core-screen__stage {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 14vh 6vw 8vh;
   box-sizing: border-box;
+}
+
+/* section datasheet du core (en flux, après la plongée) */
+#lc-core {
+  position: relative;
+  pointer-events: none;
 }
 
 .core__detected {
@@ -351,12 +471,37 @@
   text-transform: uppercase;
   color: #b7ab97;
 }
+.pulse-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 162, 92, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lcPulse 1.8s ease-out infinite;
+}
+.pulse-ring__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--copper);
+  box-shadow: 0 0 10px rgba(232, 162, 92, 0.9);
+}
 .core__instruction {
-  font-weight: 600;
-  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
   color: #f5ebdb;
   text-align: center;
+  text-wrap: balance;
+}
+.core__auto {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--ink-dim);
 }
 .core__power {
   font-family: var(--font-mono);
@@ -376,13 +521,6 @@
   align-items: center;
   gap: 10px;
   animation: lcFadeUp 1s ease 0.4s both;
-}
-.core__scrollhint-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
 }
 .core__scrollhint .scroll-line { height: 40px; }
 
@@ -713,6 +851,22 @@
 }
 .topbar__lang-btn--active { color: var(--copper); }
 .topbar__slash { color: #57503f; }
+.topbar__nav-btn {
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.topbar__nav-btn--light {
+  color: var(--ink-mid);
+}
+.topbar__nav-btn:hover {
+  color: var(--copper-link);
+}
 .topbar__menu-btn {
   background: none;
   border: 1px solid rgba(232, 162, 92, 0.3);
@@ -1022,9 +1176,18 @@
   z-index: 100;
   background: var(--bg);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 40px;
   transition: opacity 0.65s ease;
+}
+.boot__skip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #57503f;
 }
 .boot__panel {
   display: flex;

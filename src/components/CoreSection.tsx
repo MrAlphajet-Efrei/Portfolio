@@ -1,51 +1,16 @@
-import type { RefObject } from 'react';
 import { CONTACT_LINKS, type Strings } from '../i18n/strings';
 
 interface CoreSectionProps {
   t: Strings;
   online: boolean;
-  chargeRef: RefObject<HTMLSpanElement | null>;
-  onPowerCore: () => void;
 }
 
-/** Section core (en flux après la plongée) : charge du cœur, puis identité + specs + contact. */
-export default function CoreSection({ t, online, chargeRef, onPowerCore }: CoreSectionProps) {
+/** Section datasheet du core (en flux après la plongée) : identité + specs + contact, visible une fois online. */
+export default function CoreSection({ t, online }: CoreSectionProps) {
   return (
-    <section id="lc-core" data-screen-label="Core — chipset">
-      <div className="core__stage">
-        {!online ? (
-          <>
-            <div className="core__detected">
-              <span className="led led--blink" />
-              <span>{t.core.detected}</span>
-            </div>
-            <div className="core__prompt">
-              <div className="core__insufficient">{t.core.insufficient}</div>
-              <div className="core__instruction">{t.core.instruction}</div>
-              <div className="core__power">
-                power <span ref={chargeRef}>0%</span>
-              </div>
-              <button className="btn-cta" onClick={onPowerCore}>
-                {t.core.button}
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="core__detected core__detected--online">
-              <span className="led led--hot-solid" />
-              <span>{t.core.online}</span>
-            </div>
-            <div className="core__scrollhint">
-              <div className="core__scrollhint-label">{t.core.scrollHint}</div>
-              <div className="scroll-line" />
-            </div>
-          </>
-        )}
-      </div>
-
+    <section id="lc-core" data-screen-label="Core — datasheet">
       {online && (
-        <div className="core__sheets" data-screen-label="Identité + specs + contact">
+        <div className="core__sheets selectable" data-screen-label="Identité + specs + contact">
           <div className="sheet">
             <div className="tag">{t.id.tag}</div>
             <h1 className="sheet__name">{t.id.name}</h1>
