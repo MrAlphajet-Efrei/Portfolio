@@ -13,6 +13,10 @@ fichier `Le Circuit - Yannick Yanat.dc.html`), implémenté en application auton
 - Moteur d'animation canvas 2D vanilla (`src/engine/circuit-engine.js`), sans dépendance
 - i18n FR/EN typé (`src/i18n/strings.ts`)
 
+## Déploiement
+
+Automatique via **Vercel** : chaque push sur `main` déclenche un build et une mise en production.
+
 ## Scripts
 
 | Commande          | Effet                                        |

@@ -48,7 +48,8 @@
 - `CLAUDE.md` référence toujours `@AGENTS.md` qui n'existe pas
 
 ### Prochaine session
-- [ ] Décider du déploiement (GitHub Pages via Actions ? Vercel ?) et brancher le domaine `yannickyanat.com`
+- [x] Déploiement : réglé — **automatique via Vercel** à chaque push sur `main` (info Yannick, 2026-07-10)
+- [ ] Vérifier le branchement du domaine `yannickyanat.com` sur le projet Vercel
 - [ ] Créer `AGENTS.md` ou retirer la référence dans `CLAUDE.md`
 - [ ] Tester le parcours mobile/tactile réel (instructions touch, tap pulse, charge au doigt)
 - [ ] Éventuel resync design si le projet Claude Design évolue encore
