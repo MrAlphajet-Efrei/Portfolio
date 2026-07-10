@@ -48,6 +48,15 @@ export default function App() {
 
   const reduced = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, []);
   const finePointer = useMemo(() => window.matchMedia('(pointer: fine)').matches, []);
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 720px)').matches);
+
+  // --- breakpoint mobile ---
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 720px)');
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   // Miroir de l'état pour les callbacks impératifs (moteur, clavier, boucle rAF).
   const stateRef = useRef({ lang, read, menuOpen, openNode, loading });
@@ -337,7 +346,7 @@ export default function App() {
 
   const t = STRINGS[lang];
   const hints = finePointer ? t.ui.hintsFine : t.ui.hintsTouch;
-  const coreInstruction = finePointer ? t.core.instruction : t.core.instructionTouch;
+  const coreInstruction = online ? t.core.online : finePointer ? t.core.instruction : t.core.instructionTouch;
 
   return (
     <div className="app">
@@ -362,10 +371,13 @@ export default function App() {
             t={t}
             beatRefs={beatRefs}
             coreInstruction={coreInstruction}
-            online={online}
             onOpenEu={() => setOpenNode('eu')}
             onOpenLlm={() => setOpenNode('llm')}
             onJumpTo={doJump}
+            onToggleRead={() => {
+              setRead((r) => !r);
+              setMenuOpen(false);
+            }}
           />
         </>
       )}
@@ -376,6 +388,7 @@ export default function App() {
         t={t}
         lang={lang}
         readMode={read}
+        isMobile={isMobile}
         onSetLang={setLang}
         onToggleRead={() => {
           setRead((r) => !r);
@@ -385,7 +398,7 @@ export default function App() {
         onToggleMenu={() => setMenuOpen((open) => !open)}
       />
 
-      {!read && <Hud powerRef={powerRef} layerRef={layerRef} barRef={barRef} hints={hints} />}
+      {!read && <Hud powerRef={powerRef} layerRef={layerRef} barRef={barRef} hints={hints} isMobile={isMobile} />}
 
       {menuOpen && (
         <MenuOverlay

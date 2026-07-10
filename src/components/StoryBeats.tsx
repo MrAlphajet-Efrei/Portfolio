@@ -5,10 +5,10 @@ interface StoryBeatsProps {
   t: Strings;
   beatRefs: RefObject<HTMLDivElement | null>[];
   coreInstruction: string;
-  online: boolean;
   onOpenEu: () => void;
   onOpenLlm: () => void;
   onJumpTo: (index: number) => void;
+  onToggleRead: () => void;
 }
 
 /**
@@ -16,7 +16,7 @@ interface StoryBeatsProps {
  * L'opacité et la translation du premier enfant sont pilotées en impératif
  * par le callback onDepth du moteur (voir App).
  */
-export default function StoryBeats({ t, beatRefs, coreInstruction, online, onOpenEu, onOpenLlm, onJumpTo }: StoryBeatsProps) {
+export default function StoryBeats({ t, beatRefs, coreInstruction, onOpenEu, onOpenLlm, onJumpTo, onToggleRead }: StoryBeatsProps) {
   return (
     <>
       <div ref={beatRefs[0]} className="beat beat--center" data-screen-label="Surface — ouverture">
@@ -33,10 +33,16 @@ export default function StoryBeats({ t, beatRefs, coreInstruction, online, onOpe
           </div>
         </div>
         <div className="beat__scrollcue">
-          <button className="btn-dive" onClick={() => onJumpTo(1)}>
-            <span className="blink">▼</span>
-            <span>{t.b0.scroll}</span>
-          </button>
+          <div className="beat__scrollcue-row">
+            <button className="btn-dive" onClick={() => onJumpTo(1)}>
+              <span className="blink">▼</span>
+              <span>{t.b0.scroll}</span>
+            </button>
+            <button className="btn-dive btn-dive--accent" onClick={onToggleRead}>
+              <span>▤</span>
+              <span>{t.ui.read}</span>
+            </button>
+          </div>
           <div className="scroll-line" />
         </div>
       </div>
@@ -110,11 +116,11 @@ export default function StoryBeats({ t, beatRefs, coreInstruction, online, onOpe
 
       <div ref={beatRefs[4]} className="beat beat--center" data-screen-label="Core approach — annonce">
         <div className="beat__announce">
-          <div className={`beat__announce-tag${online ? ' beat__announce-tag--online' : ''}`}>
-            <span className={online ? 'led led--hot-solid' : 'led led--beacon'} />
-            <span>{online ? t.core.online : t.core.detected}</span>
+          <div className="beat__announce-tag">
+            <span className="led led--beacon" />
+            <span>{t.core.detected}</span>
           </div>
-          {!online && <div className="beat__announce-instruction">{coreInstruction}</div>}
+          <div className="beat__announce-instruction">{coreInstruction}</div>
           <div className="dive-chip">
             <span className="blink">▼</span>
             <span>{t.core.approach}</span>

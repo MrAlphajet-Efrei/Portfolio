@@ -5,10 +5,11 @@ interface HudProps {
   layerRef: RefObject<HTMLSpanElement | null>;
   barRef: RefObject<HTMLDivElement | null>;
   hints: [string, string];
+  isMobile: boolean;
 }
 
-/** HUD de plongée (bas-gauche) + aides d'interaction (bas-droite), mis à jour en impératif par le moteur. */
-export default function Hud({ powerRef, layerRef, barRef, hints }: HudProps) {
+/** HUD de plongée (bas-gauche) + aides d'interaction (bas-droite, masquées sur mobile), mis à jour en impératif par le moteur. */
+export default function Hud({ powerRef, layerRef, barRef, hints, isMobile }: HudProps) {
   return (
     <>
       <div className="hud">
@@ -19,10 +20,12 @@ export default function Hud({ powerRef, layerRef, barRef, hints }: HudProps) {
           <div ref={barRef} className="hud__bar" />
         </div>
       </div>
-      <div className="hints">
-        <span>{hints[0]}</span>
-        <span>{hints[1]}</span>
-      </div>
+      {!isMobile && (
+        <div className="hints">
+          <span>{hints[0]}</span>
+          <span>{hints[1]}</span>
+        </div>
+      )}
     </>
   );
 }

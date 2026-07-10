@@ -171,6 +171,15 @@
   border-color: rgba(232, 162, 92, 0.8);
   color: var(--copper-bright);
 }
+.btn-dive--accent {
+  border-color: rgba(232, 162, 92, 0.8);
+  background: rgba(232, 162, 92, 0.16);
+  color: var(--copper-bright);
+}
+.btn-dive--accent:hover {
+  background: rgba(232, 162, 92, 0.28);
+  color: #ffe8cc;
+}
 
 /* même habillage mais non interactif (annonce d'approche du core) */
 .dive-chip {
@@ -273,6 +282,15 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  width: max-content;
+  max-width: 94vw;
+}
+.beat__scrollcue-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .beat__scrollcue .scroll-line { height: 44px; }
 
@@ -312,9 +330,6 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--copper);
-}
-.beat__announce-tag--online {
-  color: var(--copper-hot);
 }
 .led--beacon {
   width: 8px;
@@ -869,6 +884,22 @@
 }
 .topbar__nav-btn:hover {
   color: var(--copper-link);
+}
+.topbar__read-btn {
+  background: rgba(232, 162, 92, 0.12);
+  border: 1px solid rgba(232, 162, 92, 0.55);
+  border-radius: 2px;
+  padding: 9px 18px;
+  color: var(--copper-link);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.topbar__read-btn:hover {
+  background: rgba(232, 162, 92, 0.22);
+  border-color: rgba(232, 162, 92, 0.9);
+  color: var(--copper-bright);
 }
 .topbar__menu-btn {
   background: none;

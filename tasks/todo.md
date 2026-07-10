@@ -129,3 +129,22 @@ du visiteur :
 Vérifié dans Chrome : skip boot au clic, hero + bouton plonger, liens next
 dans les cartes, beacon sur EU-CORE, écran core en fondu, **auto-power déclenché
 sans action → SYSTEM ONLINE**, bouton fiche technique. Build strict + lint OK.
+
+## Resync du 2026-07-10 (6e import) — accès datasheet & responsive mobile
+
+HTML seul (moteur inchangé, vérifié) :
+
+- **Hero** : deuxième bouton « ▤ datasheet — lecture directe » (accentué) à côté
+  de « ▼ scrollez pour plonger » ; rangée flex-wrap, max-width 94vw
+- **Topbar** : le toggle datasheet/circuit devient un bouton encadré accentué ;
+  breakpoint mobile 720px (matchMedia + listener) → texte de marque, bouton
+  contact et aides bas-droite masqués sur mobile
+- **coreInstruction** : devient t.core.online quand le système est online — le
+  design intègre officiellement la correction du beat d'annonce ; notre
+  customisation locale du b4 a été retirée au profit de la version canonique
+
+Vérifié dans Chrome (desktop) : double bouton hero, topbar accentué.
+Non vérifié à l'exécution : le rendu mobile (< 720px) — la fenêtre Chrome
+pilotée refuse le redimensionnement horizontal (ancrage OS) ; logique validée
+par revue + typage (rendu conditionnel simple sur matchMedia). À contrôler
+lors du test tactile réel prévu.
