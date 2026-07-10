@@ -90,3 +90,15 @@ de « Y.YANAT — AI CORE ». Fichiers fournis par Yannick à la racine de src/.
   usage futur (OG image, à-propos…)
 - Vérifié dans Chrome : logo + halo rendus dans le topbar, favicon hashé
   dans dist/index.html
+
+## Resync du 2026-07-10 (4e import) — monogramme YY sur le core
+
+HTML inchangé, mais le moteur a évolué (leçon : toujours vérifier les deux
+fichiers, un changement moteur peut arriver sans changement HTML) :
+
+- Nouvelle méthode `_drawLogo` : monogramme YY dessiné dans le vocabulaire
+  du circuit (Y arrière écho cuivre, Y avant sérigraphié + halo qui chauffe
+  avec la charge, vias aux extrémités, pad carré au pied)
+- La gravure du chipset remplace le texte « Y.YANAT » (coreName) par le
+  monogramme ; le sous-titre AI-CORE descend à ch.side * 0.235
+- Resynchronisé verbatim, vérifié dans Chrome au niveau du core

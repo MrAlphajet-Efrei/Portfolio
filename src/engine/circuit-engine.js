@@ -375,6 +375,66 @@ CircuitEngine.prototype._tapPulse = function (px, py) {
 CircuitEngine.prototype.setLabels = function (l) { this.o.labels = l || {}; };
 CircuitEngine.prototype.setInspect = function (s) { this.o.inspect = s; };
 CircuitEngine.prototype.setDensity = function (d) { this.o.density = d; this._build(); };
+// "YY" monogram drawn in the board's own vocabulary:
+// two Y-traces with 45-degree PCB bends, via rings at the arm tips,
+// a junction via and a square pad at the stem. Back Y = dim copper echo,
+// front Y = silkscreen that heats up with the charge.
+CircuitEngine.prototype._drawLogo = function (ctx, x, y, s, q, a, breath) {
+  var u = s / 10;
+  var strokeY = function (ox, oy, w) {
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = w;
+    ctx.beginPath();
+    ctx.moveTo(x + ox, y + oy + 4.4 * u);
+    ctx.lineTo(x + ox, y + oy + 0.4 * u);
+    ctx.lineTo(x + ox - 2.3 * u, y + oy - 1.9 * u);
+    ctx.lineTo(x + ox - 2.3 * u, y + oy - 4.1 * u);
+    ctx.moveTo(x + ox, y + oy + 0.4 * u);
+    ctx.lineTo(x + ox + 2.3 * u, y + oy - 1.9 * u);
+    ctx.lineTo(x + ox + 2.3 * u, y + oy - 4.1 * u);
+    ctx.stroke();
+  };
+  var lw = Math.max(1.8, u * 0.95);
+  // back Y — dim copper echo, offset like a bus line
+  ctx.globalAlpha = (0.28 + 0.35 * q) * a;
+  ctx.strokeStyle = rgba(C_TRACE, 1);
+  strokeY(1.7 * u, 0.5 * u, lw);
+  // front Y — wide hot halo, hot under-glow, then silkscreen body
+  ctx.globalAlpha = (0.10 + 0.30 * q + breath * 0.10) * a;
+  ctx.strokeStyle = rgba(C_HOT, 1);
+  strokeY(-0.9 * u, 0, lw * 4.2);
+  ctx.globalAlpha = (0.26 + 0.60 * q + breath * 0.14) * a;
+  ctx.strokeStyle = rgba(C_HOT, 1);
+  strokeY(-0.9 * u, 0, lw * 2.1);
+  ctx.globalAlpha = (0.60 + 0.40 * q) * a;
+  ctx.strokeStyle = rgba(C_SILK, 1);
+  strokeY(-0.9 * u, 0, lw);
+  // via rings at the front Y's arm tips + junction
+  var vr = Math.max(1.6, u * 0.78);
+  var pts = [[-0.9 - 2.3, -4.1], [-0.9 + 2.3, -4.1], [-0.9, 0.4]];
+  for (var vi = 0; vi < pts.length; vi++) {
+    var px2 = x + pts[vi][0] * u, py2 = y + pts[vi][1] * u;
+    // glow dot behind the via
+    ctx.globalAlpha = (0.18 + 0.35 * q + breath * 0.10) * a;
+    ctx.fillStyle = rgba(C_HOT, 1);
+    ctx.beginPath(); ctx.arc(px2, py2, vr * 2.4, 0, TAU); ctx.fill();
+    ctx.globalAlpha = (0.90 + breath * 0.10) * (0.55 + 0.45 * q) * a;
+    ctx.fillStyle = '#14100A';
+    ctx.beginPath(); ctx.arc(px2, py2, vr, 0, TAU); ctx.fill();
+    ctx.strokeStyle = rgba(vi === 2 ? C_HOT : C_SILK, 1);
+    ctx.lineWidth = Math.max(1.1, lw * 0.6);
+    ctx.beginPath(); ctx.arc(px2, py2, vr, 0, TAU); ctx.stroke();
+  }
+  // square pad at the stem foot
+  var pr2 = vr * 1.15;
+  ctx.globalAlpha = (0.50 + 0.50 * q) * a;
+  ctx.fillStyle = rgba(C_TRACE, 1);
+  ctx.fillRect(x - 0.9 * u - pr2, y + 4.4 * u - pr2, pr2 * 2, pr2 * 2);
+  ctx.globalAlpha = (0.70 + 0.30 * q) * a;
+  ctx.strokeStyle = rgba(C_SILK, 1);
+  ctx.lineWidth = Math.max(1.1, lw * 0.6);
+  ctx.strokeRect(x - 0.9 * u - pr2, y + 4.4 * u - pr2, pr2 * 2, pr2 * 2);
+};
+
 CircuitEngine.prototype.setPaused = function (b) { this.paused = !!b; };
 CircuitEngine.prototype.setReduced = function (b) { this.o.reduced = !!b; };
 CircuitEngine.prototype.powerCoreAnim = function () {
@@ -703,17 +763,14 @@ CircuitEngine.prototype._render = function (red) {
           ctx.stroke();
         }
       }
-      // engraving
+      // engraving — YY trace monogram (silkscreen logo)
       var nfs = ch.side * 0.105;
+      this._drawLogo(ctx, ch.x, ch.y - ch.side * 0.075, ch.side * 0.42, q, la * dim, on ? breath : 0);
       ctx.textAlign = 'center';
-      ctx.font = '600 ' + nfs + 'px "Space Grotesk", sans-serif';
-      ctx.globalAlpha = (0.22 + 0.78 * q) * la * dim;
-      ctx.fillStyle = rgba(C_SILK, 1);
-      ctx.fillText(this.o.coreName, ch.x, ch.y - nfs * 0.15);
       ctx.font = '500 ' + (nfs * 0.34) + 'px "JetBrains Mono", monospace';
       ctx.globalAlpha = (0.18 + 0.72 * q) * la * dim;
       ctx.fillStyle = rgba(C_HOT, 1);
-      ctx.fillText(this.o.coreSub, ch.x, ch.y + nfs * 0.75);
+      ctx.fillText(this.o.coreSub, ch.x, ch.y + ch.side * 0.235);
       // charge ring
       if (!on && q > 0.01) {
         ctx.globalAlpha = 0.9 * la * dim;
