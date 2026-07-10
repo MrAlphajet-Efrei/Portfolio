@@ -1,3 +1,4 @@
+import logoMini from '../assets/logo-yy-mini.svg';
 import type { Lang, Strings } from '../i18n/strings';
 
 interface TopBarProps {
@@ -11,8 +12,8 @@ export default function TopBar({ t, lang, onSetLang, onToggleMenu }: TopBarProps
   return (
     <div className="topbar">
       <div className="topbar__brand">
-        <span className="topbar__led" />
-        <span>Y.YANAT — AI CORE</span>
+        <img className="topbar__logo" src={logoMini} alt="YY" />
+        <span>AI Software Engineer</span>
       </div>
       <div className="topbar__actions">
         <div className="topbar__lang">

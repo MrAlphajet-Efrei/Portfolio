@@ -74,3 +74,19 @@ Vérifié : build strict + lint OK ; dans Chrome, datasheet → menu → « Laye
 sort du mode lecture et replonge (le scroll smooth était gelé par le throttling
 de la fenêtre occultée pendant le test — un scrollTo instantané atteint bien la
 cible, comportement normal à 60 fps).
+
+## Resync du 2026-07-10 (3e import) — nouveau logo
+
+Design mis à jour : la marque du topbar devient le logo `logo-yy-mini.svg`
+(24 px, drop-shadow cuivre) avec le texte « AI Software Engineer » à la place
+de « Y.YANAT — AI CORE ». Fichiers fournis par Yannick à la racine de src/.
+
+- Logos déplacés vers `src/assets/` (logo-yy.svg complet + logo-yy-mini.svg)
+- TopBar : img importée via Vite, classe `.topbar__logo` (styles du design)
+- Favicon : l'ancien data-URI remplacé par `logo-yy-mini.svg` (résolu/hashé
+  par Vite depuis index.html)
+- `src/vite-env.d.ts` ajouté pour le typage des imports d'assets
+- logo-yy.svg (version complète) non utilisé pour l'instant — dispo pour
+  usage futur (OG image, à-propos…)
+- Vérifié dans Chrome : logo + halo rendus dans le topbar, favicon hashé
+  dans dist/index.html

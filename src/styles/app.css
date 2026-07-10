@@ -684,12 +684,11 @@
   color: #e5d9c4;
   pointer-events: auto;
 }
-.topbar__led {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  background: var(--copper);
-  box-shadow: 0 0 8px rgba(232, 162, 92, 0.9);
+.topbar__logo {
+  height: 24px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(232, 162, 92, 0.45));
 }
 .topbar__actions {
   display: flex;
