@@ -1,5 +1,65 @@
 # Journal de sessions — Portfolio « Le Circuit »
 
+## Session du 2026-07-10 (3)
+
+### Accompli
+- **7e resync du design** (commit `ddb6705`) : moteur strictement identique (diff
+  normalisé) ; changements = chaînes i18n seules — entrée Allianz retirée de la
+  timeline, intitulés réels (UHDP Développeur web, SocGen Ingénieur logiciel,
+  BNP AM Ingénieur DevOps), « early experience », « 3 ans + / 3+ years »
+- **Audit mobile complet** (émulation iframe same-origin 390×844 — la fenêtre
+  Chrome refuse toujours le resize, même via l'outil dédié) : breakpoint 720px
+  fonctionnel, parcours guidé et auto-power OK, datasheet/fiches/menu propres ;
+  2 défauts réels trouvés dans la modale, tracés jusqu'au design canonique
+- **4 fixes mobile** (commit `913ac81`), appliqués au design canonique (3 pushes
+  DesignSync du `.dc.html`) ET à `src/styles/app.css` (aucun TSX) :
+  1. tag de modale protégé du bouton fermer (`padding-right: 130px`)
+  2. flux en conteneur `overflow-x: auto` propre + `flex-shrink: 0` ;
+     modale en scroll vertical seul
+  3. dégradé de fond du topbar (lisibilité au scroll)
+  4. menu en items de largeur uniforme `min(540px, 88vw)`, alignés à gauche
+- Vérifications desktop + mobile sur build de prod à chaque étape ; tout poussé
+  (= déployé Vercel)
+
+### Partiel
+- Rien en cours — working tree propre hors journal
+
+### Décisions
+- **Les fixes de design se font dans le canon** (DesignSync write_files) et en
+  local simultanément → divergence zéro, le prochain resync diffe contre la
+  référence `circuit.dc.v8.html` (scratchpad session 2ef205eb)
+- Émulation mobile via **iframe same-origin 390×844** injectée dans la page :
+  vrai viewport pour matchMedia/moteur ; limite : `pointer: coarse` non émulable
+- Menu : largeur 540px (le 480px du plan était trop juste) + `text-align: left`
+
+### Problèmes
+- **Piège flexbox** : un flex item qui devient scroll-container perd son
+  `min-height: auto` → `.flow` écrasé à 0 dans la colonne flex de la modale ;
+  corrigé par `flex-shrink: 0` (consigné dans tasks/lessons.md)
+- `resize_window` répond « success » mais la fenêtre reste 1920×911 (ancrage OS)
+  — toujours vérifier `window.innerWidth` après resize
+
+### Reporté
+- Test tactile réel sur téléphone (tap pulse, charge au doigt, hold-surge —
+  `pointer: coarse` non émulable) ; le site est en prod, testable via l'URL Vercel
+- Vérification de l'URL Vercel de prod et du domaine `yannickyanat.com`
+- Contrôle visuel du pane Claude Design après les 3 pushes (à faire par Yannick)
+- Nouveau design « Le Réseau - Yannick Yanat » apparu dans le projet distant
+  (+ network-engine.js) — hors périmètre, à traiter si demandé
+- `CLAUDE.md` référence toujours `@AGENTS.md` inexistant
+- `logo-yy.svg` (version complète) toujours inutilisé
+
+### Prochaine session
+- [ ] Test mobile réel via l'URL de prod (priorité haute — dernier maillon non vérifié)
+- [ ] Vérifier l'URL Vercel + domaine `yannickyanat.com`
+- [ ] Confirmer le rendu du design v8 dans le pane claude.ai (fixes survivants)
+- [ ] Décider du sort de « Le Réseau » (nouveau design dans le projet distant)
+- [ ] Créer `AGENTS.md` ou retirer la référence dans `CLAUDE.md`
+- [ ] Resync éventuel : diffé HTML **et** moteur contre `circuit.dc.v8.html`
+      (refaire un fetch de référence si le scratchpad a été purgé)
+
+---
+
 ## Session du 2026-07-10 (2)
 
 ### Accompli
