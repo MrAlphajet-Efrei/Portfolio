@@ -1,5 +1,46 @@
 # Journal de sessions — Portfolio « Le Circuit »
 
+## Session du 2026-07-10 (2)
+
+### Accompli
+- **6e resync du design** (commit `1e73bc2`) : second bouton accentué « ▤ datasheet —
+  lecture directe » sous le hero, toggle datasheet/circuit du topbar en bouton encadré,
+  breakpoint mobile 720px (matchMedia + listener : marque, contact et aides masqués),
+  `coreInstruction` → « system online » quand le cœur est alimenté. Moteur inchangé (vérifié).
+- **Correctif local du beat b4 retiré** au profit de la version canonique du design
+  (qui intègre désormais la demande de Yannick de la veille via `coreInstruction`)
+- **Déploiement documenté** : automatique via **Vercel** à chaque push sur `main`
+  (info Yannick) — README, session-log et mémoire persistante mis à jour (`c8c2764`)
+- `session-log.md` et `tasks/lessons.md` désormais versionnés (partis avec `1e73bc2`)
+
+### Partiel
+- Rien en cours — working tree propre, tout est poussé (et donc déployé via Vercel)
+
+### Décisions
+- Quand le design absorbe un correctif local (ici le b4), on **revient à la version
+  canonique du design** plutôt que de garder deux mécanismes parallèles
+- Tout push sur `main` = mise en production → toujours builder localement avant de pousser
+
+### Problèmes
+- Rendu mobile (< 720px) non vérifiable à l'exécution : la fenêtre Chrome pilotée refuse
+  le redimensionnement horizontal (ancrage OS, 2 tentatives). Logique validée par revue +
+  typage ; à confirmer lors du test tactile réel.
+
+### Reporté
+- Test du parcours tactile/mobile réel (dont le rendu < 720px)
+- Vérification du domaine `yannickyanat.com` côté Vercel
+- `CLAUDE.md` référence toujours `@AGENTS.md` inexistant
+- `logo-yy.svg` (version complète) toujours inutilisé
+
+### Prochaine session
+- [ ] Récupérer l'URL Vercel et vérifier le site déployé en production (priorité haute)
+- [ ] Confirmer le branchement du domaine `yannickyanat.com`
+- [ ] Tester le parcours mobile/tactile réel (breakpoint 720px, tap pulse, charge au doigt)
+- [ ] Créer `AGENTS.md` ou retirer la référence dans `CLAUDE.md`
+- [ ] Resync design éventuel (diffé HTML **et** moteur ; référence scratchpad : `circuit.dc.v6.html`)
+
+---
+
 ## Session du 2026-07-10
 
 ### Accompli
