@@ -1,0 +1,95 @@
+/* ============ design tokens ============ */
+:root {
+  --bg: #0b0a08;
+  --ink: #efe9dc;
+  --ink-bright: #f7efe1;
+  --ink-card: #f0e7d6;
+  --ink-soft: #c9bca6;
+  --ink-mid: #d8cdbb;
+  --ink-dim: #8f8672;
+  --ink-faint: #6e6656;
+  --copper: #e8a25c;
+  --copper-link: #f0b269;
+  --copper-bright: #ffd9a3;
+  --copper-hot: #ffce96;
+  --font-sans: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ============ base ============ */
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse 130% 80% at 20% 0%, #16110a 0%, rgba(22, 17, 10, 0) 55%),
+    radial-gradient(ellipse 110% 70% at 85% 100%, #130f09 0%, rgba(19, 15, 9, 0) 60%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--copper-link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--copper-bright);
+}
+
+::selection {
+  background: rgba(232, 162, 92, 0.3);
+  color: #fff6e9;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 1px solid rgba(232, 162, 92, 0.8);
+  outline-offset: 3px;
+}
+
+body[data-nocursor],
+body[data-nocursor] a,
+body[data-nocursor] button {
+  cursor: none;
+}
+
+/* ============ keyframes ============ */
+@keyframes lcScroll {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@keyframes lcBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes lcFlow {
+  0% { left: 0%; opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: calc(100% - 5px); opacity: 0; }
+}
+
+@keyframes lcFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
