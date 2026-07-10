@@ -5,6 +5,7 @@ interface StoryBeatsProps {
   t: Strings;
   beatRefs: RefObject<HTMLDivElement | null>[];
   coreInstruction: string;
+  online: boolean;
   onOpenEu: () => void;
   onOpenLlm: () => void;
   onJumpTo: (index: number) => void;
@@ -15,7 +16,7 @@ interface StoryBeatsProps {
  * L'opacité et la translation du premier enfant sont pilotées en impératif
  * par le callback onDepth du moteur (voir App).
  */
-export default function StoryBeats({ t, beatRefs, coreInstruction, onOpenEu, onOpenLlm, onJumpTo }: StoryBeatsProps) {
+export default function StoryBeats({ t, beatRefs, coreInstruction, online, onOpenEu, onOpenLlm, onJumpTo }: StoryBeatsProps) {
   return (
     <>
       <div ref={beatRefs[0]} className="beat beat--center" data-screen-label="Surface — ouverture">
@@ -109,11 +110,11 @@ export default function StoryBeats({ t, beatRefs, coreInstruction, onOpenEu, onO
 
       <div ref={beatRefs[4]} className="beat beat--center" data-screen-label="Core approach — annonce">
         <div className="beat__announce">
-          <div className="beat__announce-tag">
-            <span className="led led--beacon" />
-            <span>{t.core.detected}</span>
+          <div className={`beat__announce-tag${online ? ' beat__announce-tag--online' : ''}`}>
+            <span className={online ? 'led led--hot-solid' : 'led led--beacon'} />
+            <span>{online ? t.core.online : t.core.detected}</span>
           </div>
-          <div className="beat__announce-instruction">{coreInstruction}</div>
+          {!online && <div className="beat__announce-instruction">{coreInstruction}</div>}
           <div className="dive-chip">
             <span className="blink">▼</span>
             <span>{t.core.approach}</span>

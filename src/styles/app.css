@@ -313,6 +313,9 @@
   text-transform: uppercase;
   color: var(--copper);
 }
+.beat__announce-tag--online {
+  color: var(--copper-hot);
+}
 .led--beacon {
   width: 8px;
   height: 8px;

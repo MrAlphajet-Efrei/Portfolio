@@ -362,6 +362,7 @@ export default function App() {
             t={t}
             beatRefs={beatRefs}
             coreInstruction={coreInstruction}
+            online={online}
             onOpenEu={() => setOpenNode('eu')}
             onOpenLlm={() => setOpenNode('llm')}
             onJumpTo={doJump}
