@@ -120,9 +120,9 @@ export const STRINGS: Record<Lang, Strings> = {
       scroll: 'scrollez pour plonger',
     },
     b1: {
-      tag: 'layer 01 — periphery · early training',
+      tag: 'layer 01 — periphery · early experience',
       title: 'Les premiers composants',
-      body: 'Zones peu alimentées, signaux rares. La formation grave les fondations, les stages posent les premiers composants.',
+      body: 'Zones peu alimentées, signaux rares. La formation grave les fondations, les premières expériences posent les premiers composants.',
       next: 'layer 02 — bus principal',
     },
     b2: {
@@ -156,7 +156,7 @@ export const STRINGS: Record<Lang, Strings> = {
       name: 'Yannick Yanat',
       title: 'AI Software Engineer',
       pitch: "J'intègre l'intelligence artificielle au cœur des produits — du besoin métier jusqu'à la production.",
-      sub: "3 ans d'expérience · Python · LLM · DevOps",
+      sub: "3 ans + d'expérience · Python · LLM · DevOps",
       specsTitle: 'processor datasheet — fiche technique',
     },
     contact: {
@@ -167,10 +167,9 @@ export const STRINGS: Record<Lang, Strings> = {
     },
     early: [
       { y: '2017 – 2023', org: 'EFREI Paris', role: "Diplôme d'ingénieur", note: "le système s'assemble" },
-      { y: '2018', org: 'Allianz', role: 'Stage', note: 'premier courant' },
-      { y: '2021', org: 'UHDP', role: 'Stage', note: 'nouvelles pistes' },
-      { y: '2021 – 2022', org: 'Société Générale', role: 'Stage', note: 'le signal se stabilise' },
-      { y: '2023', org: 'BNP Paribas AM', role: 'Stage', note: 'montée en fréquence' },
+      { y: '2021', org: 'UHDP', role: 'Développeur web', note: 'nouvelles pistes' },
+      { y: '2021 – 2022', org: 'Société Générale', role: 'Ingénieur logiciel', note: 'le signal se stabilise' },
+      { y: '2023', org: 'BNP Paribas AM', role: 'Ingénieur DevOps', note: 'montée en fréquence' },
     ],
     vieStats: [
       { v: '500 M+', l: 'devices enregistrés' },
@@ -259,9 +258,9 @@ export const STRINGS: Record<Lang, Strings> = {
       scroll: 'scroll to dive',
     },
     b1: {
-      tag: 'layer 01 — periphery · early training',
+      tag: 'layer 01 — periphery · early experience',
       title: 'The first components',
-      body: 'Barely-powered zones, scarce signals. Education etches the foundations; the internships place the first components.',
+      body: 'Barely-powered zones, scarce signals. Education etches the foundations; the first experiences place the first components.',
       next: 'layer 02 — main bus',
     },
     b2: {
@@ -295,7 +294,7 @@ export const STRINGS: Record<Lang, Strings> = {
       name: 'Yannick Yanat',
       title: 'AI Software Engineer',
       pitch: 'I build artificial intelligence into the core of products — from business need to production.',
-      sub: '3 years of experience · Python · LLM · DevOps',
+      sub: '3+ years of experience · Python · LLM · DevOps',
       specsTitle: 'processor datasheet',
     },
     contact: {
@@ -306,10 +305,9 @@ export const STRINGS: Record<Lang, Strings> = {
     },
     early: [
       { y: '2017 – 2023', org: 'EFREI Paris', role: "Master's degree in engineering", note: 'the system assembles' },
-      { y: '2018', org: 'Allianz', role: 'Internship', note: 'first current' },
-      { y: '2021', org: 'UHDP', role: 'Internship', note: 'new traces' },
-      { y: '2021 – 2022', org: 'Société Générale', role: 'Internship', note: 'the signal stabilizes' },
-      { y: '2023', org: 'BNP Paribas AM', role: 'Internship', note: 'frequency rising' },
+      { y: '2021', org: 'UHDP', role: 'Web Developer', note: 'new traces' },
+      { y: '2021 – 2022', org: 'Société Générale', role: 'Software Engineer', note: 'the signal stabilizes' },
+      { y: '2023', org: 'BNP Paribas AM', role: 'DevOps Engineer', note: 'frequency rising' },
     ],
     vieStats: [
       { v: '500M+', l: 'registered devices' },

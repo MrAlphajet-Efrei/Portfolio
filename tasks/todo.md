@@ -130,6 +130,26 @@ Vérifié dans Chrome : skip boot au clic, hero + bouton plonger, liens next
 dans les cartes, beacon sur EU-CORE, écran core en fondu, **auto-power déclenché
 sans action → SYSTEM ONLINE**, bouton fiche technique. Build strict + lint OK.
 
+## Resync du 2026-07-10 (7e import) — contenu timeline & intitulés
+
+Moteur strictement identique (diff normalisé wrapper/indentation : aucun écart).
+Diff HTML limité aux chaînes i18n (`src/i18n/strings.ts`) :
+
+- **Timeline early** : entrée Allianz 2018 supprimée ; les « Stage »/« Internship »
+  deviennent des intitulés réels — UHDP « Développeur web / Web Developer »,
+  Société Générale « Ingénieur logiciel / Software Engineer »,
+  BNP Paribas AM « Ingénieur DevOps / DevOps Engineer »
+- **b1.tag** : « early training » → « early experience » (FR+EN) ;
+  b1.body : « les stages posent » → « les premières expériences posent » (idem EN)
+- **id.sub** : « 3 ans d'expérience » → « 3 ans + d'expérience » / « 3+ years »
+- Le label moteur `ALLIANZ` (layer 01) reste : inchangé dans le design distant
+- Note : le `.dc.html` distant référence désormais `support.js` = runtime dc généré
+  (harnais claude.ai), rien à porter ; nouveau design « Le Réseau » apparu dans le
+  projet distant, hors périmètre de ce resync
+
+Vérifié dans Chrome (build de prod, FR et EN) : datasheet affiche la nouvelle
+timeline et les nouveaux sous-titres. Build strict + lint OK.
+
 ## Resync du 2026-07-10 (6e import) — accès datasheet & responsive mobile
 
 HTML seul (moteur inchangé, vérifié) :
