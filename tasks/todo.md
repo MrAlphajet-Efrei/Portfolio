@@ -130,6 +130,32 @@ Vérifié dans Chrome : skip boot au clic, hero + bouton plonger, liens next
 dans les cartes, beacon sur EU-CORE, écran core en fondu, **auto-power déclenché
 sans action → SYSTEM ONLINE**, bouton fiche technique. Build strict + lint OK.
 
+## Fixes mobile du 2026-07-10 — modale + cosmétique (canon + local)
+
+Suite à l'audit mobile (émulation iframe 390×844). Les 4 fixes ont été appliqués
+**dans le design canonique** (push DesignSync du `.dc.html`, moteur intact) **et**
+dans `src/styles/app.css` (aucun TSX touché) — divergence zéro :
+
+1. **Modale — tag vs bouton fermer** : `padding-right: 130px` sur le tag
+   (`.modal > .tag` en local, inline côté design)
+2. **Modale — débordement horizontal** : `.modal` passe en `overflow-y: auto;
+   overflow-x: hidden` ; `.flow` devient son propre conteneur `overflow-x: auto`
+   (+ padding bas 8→14px pour la scrollbar fine). **Piège rencontré** : un flex
+   item qui devient scroll-container perd son `min-height: auto` → la colonne
+   flex de la modale l'écrasait à 0 quand le contenu dépasse 90vh ; corrigé par
+   `flex-shrink: 0` sur `.flow`
+3. **Topbar** : dégradé de fond permanent (lisibilité quand le contenu défile
+   derrière, desktop et mobile)
+4. **Menu** : items en largeur uniforme `min(540px, 88vw)` + `text-align: left`
+   (480px du plan initial était trop juste pour « Layer 03 — zone de puissance »
+   à 1.9rem, et le wrap se centrait via le text-align hérité du button)
+
+Vérifié (build prod, Chrome) : desktop — modale intacte (aucun scroll interne
+parasite), menu aligné sans wrap, dégradé topbar en datasheet ; mobile 390×844 —
+tag sur 4 lignes sans chevaucher fermer, `scrollWidth == clientWidth` sur
+`.modal`, flux complet (h=130) et défilable, menu aligné. Référence scratchpad :
+`circuit.dc.v8.html` (= état distant après push).
+
 ## Resync du 2026-07-10 (7e import) — contenu timeline & intitulés
 
 Moteur strictement identique (diff normalisé wrapper/indentation : aucun écart).
